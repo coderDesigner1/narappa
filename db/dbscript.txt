@@ -1,0 +1,63 @@
+CREATE DATABASE `artist_tribute` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+
+CREATE TABLE `admins` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `username` varchar(45) DEFAULT NULL,
+  `password` varchar(145) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `award_photos` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `caption` varchar(300) DEFAULT NULL,
+  `year` int NOT NULL,
+  `event` varchar(300) DEFAULT NULL,
+  `image_url` varchar(300) DEFAULT NULL,
+  `modified_by` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `awards` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `title` varchar(45) DEFAULT NULL,
+  `organization` varchar(45) DEFAULT NULL,
+  `year` int NOT NULL,
+  `description` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `custom_pages` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `content` varchar(10000) NOT NULL,
+  `created_at` datetime(6) NOT NULL,
+  `month` int NOT NULL,
+  `published` bit(1) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `updated_at` datetime(6) NOT NULL,
+  `year` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `guestbook_entries` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(6) NOT NULL,
+  `message` varchar(2000) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `parent_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `parent_id` (`parent_id`),
+  CONSTRAINT `guestbook_entries_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `guestbook_entries` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `paintings` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `title` varchar(300) DEFAULT NULL,
+  `year` int NOT NULL,
+  `medium` varchar(300) DEFAULT NULL,
+  `description` varchar(300) DEFAULT NULL,
+  `image_url` varchar(300) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+
