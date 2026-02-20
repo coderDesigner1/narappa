@@ -68,12 +68,12 @@ const PagesMenu = ({ onPageSelect }) => {
 
     return (
         <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)', padding: '1rem' }}>
-            <h3 style={{ fontSize: '1.25rem', fontWeight: '600', color: '#1e293b', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            {/* <h3 style={{ fontSize: '1.25rem', fontWeight: '600', color: '#1e293b', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <Calendar size={20} />
                 Archives
-            </h3>
+            </h3> */}
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            {/* <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 {years.map(year => {
                     const isExpanded = expandedYear === year;
                     const pages = yearPages[year] || [];
@@ -147,7 +147,7 @@ const PagesMenu = ({ onPageSelect }) => {
                         </div>
                     );
                 })}
-            </div>
+            </div> */}
         </div>
     );
 };

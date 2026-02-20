@@ -40,7 +40,7 @@ const PaintingsPage = () => {
             <div
               key={painting.id}
               onClick={() => setSelectedIndex(index)}
-              style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)', overflow: 'hidden', cursor: 'pointer', transform: 'scale(1)', transition: 'transform 0.3s' }}
+              style={{ background: 'white', border: '1px solid #e0dfdc', borderRadius: '0.5rem', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.4)', overflow: 'hidden', cursor: 'pointer', transform: 'scale(1)', transition: 'transform 0.3s' }}
               onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
               onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
             >
@@ -149,7 +149,7 @@ const PaintingsPage = () => {
               alignItems: 'center',
               justifyContent: 'center',
               cursor: 'pointer',
-              boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)',
+              boxShadow: '0 4px 6px -1px rgba(0,0,0,0.3)',
               transition: 'all 0.2s',
               zIndex: 60
             }}

@@ -27,7 +27,7 @@ const ManageAwards = () => {
   };
 
   const handleSubmit = () => {
-    if (!title || !organization || !year) {
+    if (!title || !organization ) {
       setMessage('Please fill in title, organization, and year');
       setTimeout(() => setMessage(''), 3000);
       return;
@@ -255,7 +255,7 @@ const ManageAwards = () => {
             />
           </div>
           <div>
-            <label style={{ display: 'block', fontWeight: '500', marginBottom: '0.5rem' }}>Year *</label>
+            <label style={{ display: 'block', fontWeight: '500', marginBottom: '0.5rem' }}>Year </label>
             <input
               type="number"
               value={year}
