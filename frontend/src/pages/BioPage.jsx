@@ -3,30 +3,28 @@ import { FileText, Calendar } from 'lucide-react';
 import PageViewer from '../components/PageViewer';
 
 const BioPage = () => {
-  const [pages, setPages] = useState([]);
+  
+  const [bioParagraphs, setBioParagraphs] = useState([]);
   const [selectedPage, setSelectedPage] = useState(null);
+  const [loading, setLoading] = useState(true);
   const API_BASE_URL = 'http://localhost:8080/api';
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/pages/published`)
+   
+    // Fetch bio paragraphs
+    fetch(`${API_BASE_URL}/bio-paragraphs`)
       .then(res => res.json())
       .then(data => {
-        // Sort pages by year and month (most recent first)
-        const sortedPages = data.sort((a, b) => {
-          if (b.year !== a.year) return b.year - a.year;
-          return b.month - a.month;
-        });
-        setPages(sortedPages);
+        setBioParagraphs(data);
+        setLoading(false);
       })
-      .catch(err => console.error('Error:', err));
+      .catch(err => {
+        console.error('Error fetching bio paragraphs:', err);
+        setLoading(false);
+      });
   }, []);
 
-  const months = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-  ];
-
-  return (
+   return (
     <>
       {/* Bio Content Section */}
       <section style={{
@@ -46,40 +44,47 @@ const BioPage = () => {
           Biography
         </h1>
         
-        <div style={{
-          fontSize: '1rem',
-          color: '#4b5563',
-          lineHeight: '1.8'
-        }}>
-          <p style={{ marginBottom: '1rem' }}>
-            Narappa Chintha was born in [YEAR] in [PLACE], India. From an early age, he showed 
-            a remarkable talent for visual arts, spending countless hours sketching the landscapes 
-            and people around him. His passion for art led him to pursue formal training at 
-            [ART INSTITUTION], where he studied under renowned masters.
-          </p>
-          
-          <p style={{ marginBottom: '1rem' }}>
-            Throughout his career spanning over three decades, he worked across multiple mediums 
-            including watercolor, oil painting, lithography, acrylic, and woodcut. His work is 
-            characterized by atmospheric landscapes that capture the essence of rural India, 
-            with a particular focus on the interplay of light and weather conditions.
-          </p>
-          
-          <p style={{ marginBottom: '1rem' }}>
-            His paintings have been exhibited in galleries across India and internationally, 
-            earning him numerous awards and recognition from art institutions. Beyond his 
-            artistic achievements, he was known as a generous mentor who inspired countless 
-            young artists to pursue their creative dreams.
-          </p>
-          
-          <p>
-            His legacy lives on through his beautiful body of work and the many lives he touched 
-            through his art and teaching. This website serves as a tribute to his extraordinary 
-            journey and artistic contributions.
-          </p>
-        </div>
+        {loading ? (
+          <p style={{ color: '#6b7280', fontStyle: 'italic' }}>Loading biography...</p>
+        ) : bioParagraphs.length === 0 ? (
+          <p style={{ color: '#6b7280', fontStyle: 'italic' }}>No biography content available.</p>
+        ) : (
+          <div style={{
+            fontSize: '1rem',
+            color: '#4b5563',
+            lineHeight: '1.8'
+          }}>
+            {bioParagraphs.map((item, index) => (
+              <div key={item.id} style={{ marginBottom: index < bioParagraphs.length - 1 ? '1rem' : '0' }}>
+                {item.page && (
+                  <h2 style={{
+                    fontSize: '1.5rem',
+                    fontWeight: '600',
+                    color: '#1f2937',
+                    marginTop: index > 0 ? '2rem' : '0',
+                    marginBottom: '0.75rem'
+                  }}>
+                    {item.header === 1 && item.paragraph}
+                  </h2>
+                )}
+                <p style={{ margin: 0 }}>
+                  {item.paragraph}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
 
+  
+
+      {/* PageViewer Modal */}
+      {selectedPage && (
+        <PageViewer
+          page={selectedPage}
+          onClose={() => setSelectedPage(null)}
+        />
+      )}
     </>
   );
 };
