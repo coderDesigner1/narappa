@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/paintings")
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+@CrossOrigin(origins = "http://narappa-frontend:3000", allowCredentials = "true")
 public class PaintingController {
     
     @Autowired
