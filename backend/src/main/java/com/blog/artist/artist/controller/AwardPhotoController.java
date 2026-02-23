@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/award-photos")
-@CrossOrigin(origins = "http://narappa-frontend:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AwardPhotoController {
     
     @Autowired

@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/guestbook")
-@CrossOrigin(origins = "http://narappa-frontend:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 public class GuestbookController {
     
     @Autowired
