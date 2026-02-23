@@ -1,4 +1,5 @@
-CREATE DATABASE  IF NOT EXISTS `artist_tribute` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+
+CREATE DATABASE IF NOT EXISTS `artist_tribute`;
 USE `artist_tribute`;
 -- MySQL dump 10.13  Distrib 8.0.44, for Win64 (x86_64)
 --
@@ -16,15 +17,6 @@ USE `artist_tribute`;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-SET @MYSQLDUMP_TEMP_LOG_BIN = @@SESSION.SQL_LOG_BIN;
-SET @@SESSION.SQL_LOG_BIN= 0;
-
---
--- GTID state at the beginning of the backup 
---
-
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'fcbb4a84-deeb-11f0-9f62-185680efec2c:1-186';
-
 --
 -- Table structure for table `admins`
 --
