@@ -273,4 +273,9 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
+
+UPDATE award_photos SET image_url = REPLACE(image_url, 'http://localhost:8080', '');
+UPDATE paintings SET image_url = REPLACE(image_url, 'http://localhost:8080', '');
+UPDATE custom_pages SET content = REPLACE(content, 'http://localhost:8080', '');
+
 -- Dump completed on 2026-02-22 20:59:26
