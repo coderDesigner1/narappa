@@ -15,7 +15,9 @@ const ManagePaintings = () => {
   const [message, setMessage] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const API_BASE_URL = 'http://localhost:8080/api';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080/api';
+  const UPLOADS_BASE = process.env.REACT_APP_UPLOADS_BASE_URL || 'http://localhost:8080';
+  const resolveUrl = (url) => url && url.startsWith('/') ? UPLOADS_BASE + url : (url || '');
 
   useEffect(() => {
     fetchPaintings();
@@ -184,7 +186,7 @@ const handleDelete = (id) => {
                 <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flex: 1 }}>
                   {painting.imageUrl && (
                     <img 
-                      src={painting.imageUrl} 
+                      src={resolveUrl(painting.imageUrl)} 
                       alt={painting.title} 
                       style={{ 
                         width: '100px', 

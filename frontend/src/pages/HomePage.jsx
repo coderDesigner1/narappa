@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import { Award } from 'lucide-react';
 import SideBar from '../components/custom/SideBar';
 import PageViewer from '../components/PageViewer'
@@ -8,6 +9,7 @@ const HomePage = () => {
   const [awards, setAwards] = useState([]);
   const [selectedPage, setSelectedPage] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+   const navigate = useNavigate();
 
   const API_BASE_URL = 'http://localhost:8080/api';
 
@@ -41,7 +43,7 @@ const HomePage = () => {
         gridTemplateColumns: '1fr 1fr', 
         gap: '4rem', 
         alignItems: 'center',
-        marginBottom: '6rem',
+        marginBottom: '2rem',
         minHeight: '500px'
       }}>
         
@@ -107,6 +109,7 @@ A home built on patience, sacrifice, and quiet strength.<br/>
 A father whose silence taught more than words,<br/>
 A husband steadfast through every storm,<br/>
 A brother bound by loyalty,<br/>
+A teacher teaching future generation,<br/>
 A friend and fellow artist generous in spirit.<br/>
 <br/>
 Through every struggle, he carried dignity;<br/>
@@ -129,6 +132,7 @@ His life itself remains his greatest masterpiece.<br/>
           }}
           onMouseEnter={(e) => e.currentTarget.style.background = '#374151'}
           onMouseLeave={(e) => e.currentTarget.style.background = '#1f2937'}
+          onClick={() => navigate("/bio")}
           >
             Bio
             <span>→</span>
@@ -177,7 +181,7 @@ His life itself remains his greatest masterpiece.<br/>
           fontStyle: 'italic',
           marginBottom: '2rem'
         }}>
-I am forever grateful to my family — my beloved wife and children,  and all who supported, guided me allowing me to grow as an artist and as a person.        </p>
+"I am forever grateful to my family — my beloved wife and children,  and all who supported, guided me allowing me to grow as an artist and as a person. ""       </p>
         {/* <button style={{
           background: '#1f2937',
           color: 'white',

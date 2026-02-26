@@ -3,7 +3,9 @@ import { Upload, X, Scissors, Save, Move, RotateCw, Loader } from 'lucide-react'
 
 const ImageUploadWithCrop = ({ onImageUploaded, currentImageUrl, buttonText }) => {
   const [image, setImage] = useState(null);
-  const [croppedImage, setCroppedImage] = useState(currentImageUrl || null);
+  const API_UPLOADS_BASE = process.env.REACT_APP_UPLOADS_BASE_URL || 'http://localhost:8080';
+  const resolveUrl = (url) => url && url.startsWith('/') ? API_UPLOADS_BASE + url : url;
+  const [croppedImage, setCroppedImage] = useState(currentImageUrl ? resolveUrl(currentImageUrl) : null);
   const [showCropModal, setShowCropModal] = useState(false);
   const [cropArea, setCropArea] = useState({ x: 0, y: 0, width: 0, height: 0 });
   const [isDragging, setIsDragging] = useState(false);
@@ -19,7 +21,7 @@ const ImageUploadWithCrop = ({ onImageUploaded, currentImageUrl, buttonText }) =
   const containerRef = useRef(null);
   const previewCanvasRef = useRef(null);
 
-  const API_BASE_URL = 'http://localhost:8080/api';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080/api';
 
   const getAuthHeaders = () => {
     const token = localStorage.getItem('token');
@@ -31,7 +33,7 @@ const ImageUploadWithCrop = ({ onImageUploaded, currentImageUrl, buttonText }) =
 
   useEffect(() => {
     if (currentImageUrl) {
-      setCroppedImage(currentImageUrl);
+      setCroppedImage(resolveUrl(currentImageUrl));
     }
   }, [currentImageUrl]);
 
@@ -305,10 +307,15 @@ const ImageUploadWithCrop = ({ onImageUploaded, currentImageUrl, buttonText }) =
         throw new Error('No URL returned from server');
       }
 
-      console.log('Upload successful! URL:', uploadedUrl);
+      // Strip host so only /uploads/filename.jpg is stored in the DB.
+      // Environment-agnostic: works in dev, staging, and production.
+      const relativePath = uploadedUrl.replace(/^https?:\/\/[^/]+/, '');
 
-      setCroppedImage(uploadedUrl);
-      onImageUploaded(uploadedUrl);
+      console.log('Upload successful! Storing path:', relativePath);
+
+      // Full URL for local preview; relative path saved to DB via callback
+      setCroppedImage(API_UPLOADS_BASE + relativePath);
+      onImageUploaded(relativePath);
       
       setShowCropModal(false);
       setImage(null);

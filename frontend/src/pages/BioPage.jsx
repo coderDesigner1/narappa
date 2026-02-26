@@ -15,6 +15,7 @@ const BioPage = () => {
     fetch(`${API_BASE_URL}/bio-paragraphs`)
       .then(res => res.json())
       .then(data => {
+        console.log(data)
         setBioParagraphs(data);
         setLoading(false);
       })
@@ -54,29 +55,49 @@ const BioPage = () => {
             color: '#4b5563',
             lineHeight: '1.8'
           }}>
-            {bioParagraphs.map((item, index) => (
-              <div key={item.id} style={{ marginBottom: index < bioParagraphs.length - 1 ? '1rem' : '0' }}>
-                {item.page && (
-                  <h2 style={{
-                    fontSize: '1.5rem',
-                    fontWeight: '600',
-                    color: '#1f2937',
-                    marginTop: index > 0 ? '2rem' : '0',
-                    marginBottom: '0.75rem'
-                  }}>
-                    {item.header === 1 && item.paragraph}
-                  </h2>
-                )}
-                <p style={{ margin: 0 }}>
-                  {item.paragraph}
-                </p>
-              </div>
-            ))}
+            {(() => {
+              // Group by page
+              const pages = bioParagraphs.reduce((acc, item) => {
+                const page = item.page ?? 'default';
+                if (!acc[page]) acc[page] = [];
+                acc[page].push(item);
+                return acc;
+              }, {});
+
+              return Object.entries(pages).map(([page, items], pageIndex) => {
+                // Find header and sort paragraphs by order
+                const header = items.find(item => item.header === '1');
+                const paragraphs = items
+                                  .filter(item => item.header !== '1')
+                                  .sort((a, b) => a.order - b.order);
+
+                return (
+                  <div key={page}>
+                    {pageIndex > 0 && <hr style={{ margin: '2rem 0', borderColor: '#e5e7eb' }} />}
+
+                    {header && (
+                      <h2 style={{
+                        fontSize: '1.5rem',
+                        fontWeight: '600',
+                        color: '#1f2937',
+                        marginBottom: '0.75rem'
+                      }}>
+                        {header.paragraph}
+                      </h2>
+                    )}
+
+                    {paragraphs.map(item => (
+                      <p key={item.id} style={{ marginBottom: '1rem' }}>
+                        {item.paragraph}
+                      </p>
+                    ))}
+                  </div>
+                );
+              });
+            })()}
           </div>
         )}
       </section>
-
-  
 
       {/* PageViewer Modal */}
       {selectedPage && (
