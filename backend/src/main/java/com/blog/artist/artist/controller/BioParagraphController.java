@@ -20,30 +20,41 @@ public class BioParagraphController {
 
     // ── Public ────────────────────────────────────────────────────────────────
 
-    /** Return every row ordered so React can group by page number. */
+    /**
+     * Return rows ordered for React grouping.
+     * If ?lang=E/T/H is supplied, only rows matching that language are returned.
+     * If omitted, defaults to English ("E") for backward compatibility.
+     */
     @GetMapping
-    public List<BioParagraph> getAll() {
-        return bioParagraphRepository.findAllByOrderByPageAscOrderNumAsc();
+    public List<BioParagraph> getAll(
+            @RequestParam(value = "lang", defaultValue = "E") String lang) {
+        return bioParagraphRepository.findByLanguageOrderByPageAscOrderNumAsc(lang);
     }
 
-    /** Distinct page numbers – used by the admin page-selector dropdown. */
+    /** Distinct page numbers for a given language – used by the admin page-selector dropdown. */
     @GetMapping("/pages")
-    public List<Integer> getDistinctPages() {
-        return bioParagraphRepository.findDistinctPages();
+    public List<Integer> getDistinctPages(
+            @RequestParam(value = "lang", defaultValue = "E") String lang) {
+        return bioParagraphRepository.findDistinctPagesByLanguage(lang);
     }
 
-    /** All rows for one page – used by the admin editor when a page is selected. */
+    /** All rows for one page + language – used by the admin editor when a page is selected. */
     @GetMapping("/page/{page}")
-    public List<BioParagraph> getByPage(@PathVariable Integer page) {
-        return bioParagraphRepository.findByPageOrderByOrderNumAsc(page);
+    public List<BioParagraph> getByPage(
+            @PathVariable Integer page,
+            @RequestParam(value = "lang", defaultValue = "E") String lang) {
+        return bioParagraphRepository.findByPageAndLanguageOrderByOrderNumAsc(page, lang);
     }
 
     // ── Admin ─────────────────────────────────────────────────────────────────
 
-    /** Create a single row. */
+    /** Create a single row. The request body must include a "language" field (E/T/H). */
     @PostMapping
     @PreAuthorize("isAuthenticated()")
     public BioParagraph create(@RequestBody BioParagraph item) {
+        if (item.getLanguage() == null || item.getLanguage().isBlank()) {
+            item.setLanguage("E"); // default to English
+        }
         return bioParagraphRepository.save(item);
     }
 
@@ -59,6 +70,7 @@ public class BioParagraphController {
                     existing.setPage(details.getPage());
                     existing.setOrderNum(details.getOrderNum());
                     existing.setHeader(details.getHeader());
+                    existing.setLanguage(details.getLanguage() != null ? details.getLanguage() : "E");
                     return ResponseEntity.ok(bioParagraphRepository.save(existing));
                 })
                 .orElse(ResponseEntity.notFound().build());
@@ -81,30 +93,38 @@ public class BioParagraphController {
      * The admin editor sends the full page state on every save, so we delete
      * the old rows and insert the new ones in one transaction.
      */
+    /**
+     * Bulk-save: replaces ALL rows for a given page + language with the supplied list.
+     * URL: PUT /api/bio-paragraphs/page/{page}/bulk?lang=E
+     */
     @PutMapping("/page/{page}/bulk")
     @PreAuthorize("isAuthenticated()")
     @Transactional
     public List<BioParagraph> bulkSave(
             @PathVariable Integer page,
+            @RequestParam(value = "lang", defaultValue = "E") String lang,
             @RequestBody List<BioParagraph> items) {
 
-        bioParagraphRepository.deleteAllByPage(page);
+        bioParagraphRepository.deleteAllByPageAndLanguage(page, lang);
         bioParagraphRepository.flush();
 
-        // Ensure every item carries the correct page number
+        // Ensure every item carries the correct page number and language
         items.forEach(item -> {
-            item.setId(null);   // force INSERT
+            item.setId(null);       // force INSERT
             item.setPage(page);
+            item.setLanguage(lang);
         });
 
         return bioParagraphRepository.saveAll(items);
     }
 
     @DeleteMapping("/page/{page}")
-@PreAuthorize("isAuthenticated()")
-@Transactional
-public ResponseEntity<?> deletePage(@PathVariable Integer page) {
-    bioParagraphRepository.deleteAllByPage(page);
-    return ResponseEntity.ok().build();
-}   
+    @PreAuthorize("isAuthenticated()")
+    @Transactional
+    public ResponseEntity<?> deletePage(
+            @PathVariable Integer page,
+            @RequestParam(value = "lang", defaultValue = "E") String lang) {
+        bioParagraphRepository.deleteAllByPageAndLanguage(page, lang);
+        return ResponseEntity.ok().build();
+    }   
 }

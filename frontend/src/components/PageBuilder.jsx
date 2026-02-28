@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 import { Plus, Image as ImageIcon, MoveUp, MoveDown, Trash2, Bold, Italic, Underline, Save, Crop, Edit2 } from 'lucide-react';
 import  AuthService from '../services/AuthService';
 
@@ -19,6 +20,7 @@ const PageBuilder = () => {
   const cropPreviewRef = useRef(null);
   const editorRefs = useRef({});
 
+  const { language } = useLanguage();
   const API_BASE_URL = 'http://localhost:8080/api';
 
   const addTextBlock = () => {
@@ -222,7 +224,8 @@ const PageBuilder = () => {
         content: JSON.stringify(blocks),
         month,
         year,
-        published
+        published,
+        language   // E / T / H — set by the global language switcher
       };
 
       const response = await fetch(`${API_BASE_URL}/pages`, {
@@ -429,7 +432,20 @@ const PageBuilder = () => {
 
       {/* Page Settings */}
       <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)', padding: '1.5rem' }}>
-        <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#1e293b', marginBottom: '1rem' }}>Page Settings</h3>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+          <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#1e293b', margin: 0 }}>Page Settings</h3>
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+            padding: '0.25rem 0.75rem',
+            background: '#1f2937', color: 'white',
+            borderRadius: '0.375rem', fontSize: '0.8rem', fontWeight: '700'
+          }}>
+            {language === 'T' ? '🇮🇳 తెలుగు' : language === 'H' ? '🇮🇳 हिन्दी' : '🇺🇸 English'}
+          </span>
+          <span style={{ fontSize: '0.8rem', color: '#64748b' }}>
+            This page will be saved for the currently selected language
+          </span>
+        </div>
 
         {message && (
           <div style={{

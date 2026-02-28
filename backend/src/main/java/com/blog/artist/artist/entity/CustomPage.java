@@ -32,6 +32,8 @@ public class CustomPage {
     
     @Column(nullable = false)
     private Boolean published = false;
+
+    private String language = "E";
     
     @PrePersist
     protected void onCreate() {
@@ -43,4 +45,6 @@ public class CustomPage {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
+
 }

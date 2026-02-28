@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 import { FileText, Calendar } from 'lucide-react';
 import PageViewer from '../components/PageViewer';
 
@@ -6,13 +7,14 @@ const BioPage = () => {
   
   const [bioParagraphs, setBioParagraphs] = useState([]);
   const [selectedPage, setSelectedPage] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); 
+  const { language } = useLanguage();
   const API_BASE_URL = 'http://localhost:8080/api';
 
   useEffect(() => {
    
-    // Fetch bio paragraphs
-    fetch(`${API_BASE_URL}/bio-paragraphs`)
+    setLoading(true);
+    fetch(`${API_BASE_URL}/bio-paragraphs?lang=${language}`)
       .then(res => res.json())
       .then(data => {
         console.log(data)
@@ -23,7 +25,7 @@ const BioPage = () => {
         console.error('Error fetching bio paragraphs:', err);
         setLoading(false);
       });
-  }, []);
+  }, [language]);
 
    return (
     <>
@@ -42,13 +44,13 @@ const BioPage = () => {
           color: '#1f2937',
           marginBottom: '1.5rem'
         }}>
-          Biography
+          { language === 'T' ? 'జీవిత చరిత్ర' : language === 'H' ? 'जीवनी' : 'Biography' }
         </h1>
         
         {loading ? (
-          <p style={{ color: '#6b7280', fontStyle: 'italic' }}>Loading biography...</p>
+          <p style={{ color: '#6b7280', fontStyle: 'italic' }}>{ language === 'T' ? 'లోడవుతోంది...' : language === 'H' ? 'लोड हो रहा है...' : 'Loading biography...' }</p>
         ) : bioParagraphs.length === 0 ? (
-          <p style={{ color: '#6b7280', fontStyle: 'italic' }}>No biography content available.</p>
+          <p style={{ color: '#6b7280', fontStyle: 'italic' }}>{ language === 'T' ? 'జీవిత చరిత్ర అందుబాటులో లేదు.' : language === 'H' ? 'जीवनी उपलब्ध नहीं है।' : 'No biography content available.' }</p>
         ) : (
           <div style={{
             fontSize: '1rem',
@@ -69,7 +71,7 @@ const BioPage = () => {
                 const header = items.find(item => item.header === '1');
                 const paragraphs = items
                                   .filter(item => item.header !== '1')
-                                  .sort((a, b) => a.order - b.order);
+                                  .sort((a, b) => a.orderNum - b.orderNum);
 
                 return (
                   <div key={page}>

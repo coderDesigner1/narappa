@@ -17,10 +17,11 @@ public class CustomPageController {
     @Autowired
     private CustomPageRepository customPageRepository;
     
-    // Public - Get all published pages
+    // Public - Get all published pages, filtered by language (defaults to English)
     @GetMapping("/published")
-    public List<CustomPage> getPublishedPages() {
-        return customPageRepository.findByPublishedTrueOrderByYearDescMonthDesc();
+    public List<CustomPage> getPublishedPages(
+            @RequestParam(value = "lang", defaultValue = "E") String lang) {
+        return customPageRepository.findByPublishedTrueAndLanguageOrderByYearDescMonthDesc(lang);
     }
     
     // Public - Get page by ID
@@ -31,22 +32,28 @@ public class CustomPageController {
             .orElse(ResponseEntity.notFound().build());
     }
     
-    // Public - Get years with pages
+    // Public - Get years that have pages for the given language
     @GetMapping("/years")
-    public List<Integer> getYears() {
-        return customPageRepository.findDistinctYears();
+    public List<Integer> getYears(
+            @RequestParam(value = "lang", defaultValue = "E") String lang) {
+        return customPageRepository.findDistinctYearsByLanguage(lang);
     }
     
-    // Public - Get pages by year and month
+    // Public - Get pages by year, month, and language
     @GetMapping("/year/{year}/month/{month}")
-    public List<CustomPage> getPagesByYearMonth(@PathVariable Integer year, @PathVariable Integer month) {
-        return customPageRepository.findByYearAndMonthOrderByCreatedAtDesc(year, month);
+    public List<CustomPage> getPagesByYearMonth(
+            @PathVariable Integer year,
+            @PathVariable Integer month,
+            @RequestParam(value = "lang", defaultValue = "E") String lang) {
+        return customPageRepository.findByYearAndMonthAndLanguageOrderByCreatedAtDesc(year, month, lang);
     }
     
-    // Public - Get pages by year
+    // Public - Get pages by year and language
     @GetMapping("/year/{year}")
-    public List<CustomPage> getPagesByYear(@PathVariable Integer year) {
-        return customPageRepository.findByYearOrderByMonthDesc(year);
+    public List<CustomPage> getPagesByYear(
+            @PathVariable Integer year,
+            @RequestParam(value = "lang", defaultValue = "E") String lang) {
+        return customPageRepository.findByYearAndLanguageOrderByMonthDesc(year, lang);
     }
     
     // Admin only - Get all pages
@@ -56,10 +63,13 @@ public class CustomPageController {
         return customPageRepository.findAll();
     }
     
-    // Admin only - Create page
+    // Admin only - Create page (language field E/T/H must be included in request body)
     @PostMapping
     @PreAuthorize("isAuthenticated()")
     public CustomPage createPage(@RequestBody CustomPage page) {
+        if (page.getLanguage() == null || page.getLanguage().isBlank()) {
+            page.setLanguage("E"); // default to English
+        }
         return customPageRepository.save(page);
     }
     
@@ -74,6 +84,7 @@ public class CustomPageController {
                 page.setMonth(pageDetails.getMonth());
                 page.setYear(pageDetails.getYear());
                 page.setPublished(pageDetails.getPublished());
+                page.setLanguage(pageDetails.getLanguage() != null ? pageDetails.getLanguage() : "E");
                 return ResponseEntity.ok(customPageRepository.save(page));
             })
             .orElse(ResponseEntity.notFound().build());

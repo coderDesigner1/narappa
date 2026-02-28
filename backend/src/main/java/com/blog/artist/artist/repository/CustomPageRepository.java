@@ -6,11 +6,23 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface CustomPageRepository extends JpaRepository<CustomPage, Long> {
-    List<CustomPage> findByYearAndMonthOrderByCreatedAtDesc(Integer year, Integer month);
-    List<CustomPage> findByYearOrderByMonthDesc(Integer year);
-    
-    @Query("SELECT DISTINCT p.year FROM CustomPage p ORDER BY p.year DESC")
-    List<Integer> findDistinctYears();
-    
-    List<CustomPage> findByPublishedTrueOrderByYearDescMonthDesc();
+
+    // ── Public endpoints ──────────────────────────────────────────────────────
+
+    // All published pages for a given language
+    List<CustomPage> findByPublishedTrueAndLanguageOrderByYearDescMonthDesc(String language);
+
+    // Pages by year + month + language
+    List<CustomPage> findByYearAndMonthAndLanguageOrderByCreatedAtDesc(Integer year, Integer month, String language);
+
+    // Pages by year + language
+    List<CustomPage> findByYearAndLanguageOrderByMonthDesc(Integer year, String language);
+
+    // Distinct years that have at least one page for the given language
+    @Query("SELECT DISTINCT p.year FROM CustomPage p WHERE p.language = :language ORDER BY p.year DESC")
+    List<Integer> findDistinctYearsByLanguage(String language);
+
+    // ── Admin endpoints (no language filter — admin sees all) ─────────────────
+
+    // Admin needs to see all pages regardless of language (findAll() from JpaRepository is used)
 }

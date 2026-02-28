@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 import { Plus, MoveUp, MoveDown, Trash2, Save, Eye, Type, Heading } from 'lucide-react';
 import AuthService from '../services/AuthService';
 
 const API_BASE_URL = 'http://localhost:8080/api';
 
 const BioBuilder = () => {
+  const { language } = useLanguage();
   const [rows, setRows] = useState([]);
   const [selectedPage, setSelectedPage] = useState(null);
   const [existingPages, setExistingPages] = useState([]);
@@ -26,19 +28,21 @@ const BioBuilder = () => {
 
   // ── Load existing pages on mount ──────────────────────────────────────────
  useEffect(() => {
-  fetch(`${API_BASE_URL}/bio-paragraphs/pages`)
+  // Reset editor when language changes
+  setSelectedPage(null);
+  setRows([]);
+  fetch(`${API_BASE_URL}/bio-paragraphs/pages?lang=${language}`)
     .then(r => r.json())
-    .then(data => {console.log("Data for existing pages", data)
-      setExistingPages(Array.isArray(data) ? data : [])})
+    .then(data => setExistingPages(Array.isArray(data) ? data : []))
     .catch(() => setExistingPages([]));
-}, []);
+}, [language]);
 
   // ── Load rows when page changes ───────────────────────────────────────────
   useEffect(() => {
     if (selectedPage === null) return;
-    fetch(`${API_BASE_URL}/bio-paragraphs/page/${selectedPage}`)
+    fetch(`${API_BASE_URL}/bio-paragraphs/page/${selectedPage}?lang=${language}`)
       .then(r => r.json())
-      .then(data => setRows(data.sort((a, b) => a.order - b.order)))
+      .then(data => setRows(data.sort((a, b) => a.orderNum - b.orderNum)))
       .catch(() => setRows([]));
   }, [selectedPage]);
 
@@ -51,13 +55,14 @@ const BioBuilder = () => {
       setTimeout(() => setMessage(''), 3000);
       return;
     }
-    const nextOrder = rows.length > 0 ? Math.max(...rows.map(r => r.order)) + 1 : 1;
+    const nextOrder = rows.length > 0 ? Math.max(...rows.map(r => r.orderNum ?? r.order ?? 0)) + 1 : 1;
     setRows(prev => [...prev, {
       id: null,
       paragraph: '',
       page: selectedPage,
-      order: nextOrder,
+      orderNum: nextOrder,
       header: isHeader ? '1' : '0',
+      language,
     }]);
   };
 
@@ -66,7 +71,7 @@ const BioBuilder = () => {
   };
 
   const deleteRow = (index) => {
-    setRows(prev => prev.filter((_, i) => i !== index).map((r, i) => ({ ...r, order: i + 1 })));
+    setRows(prev => prev.filter((_, i) => i !== index).map((r, i) => ({ ...r, orderNum: i + 1 })));
   };
 
   const moveRow = (index, direction) => {
@@ -74,7 +79,7 @@ const BioBuilder = () => {
     const swapIndex = index + direction;
     if (swapIndex < 0 || swapIndex >= newRows.length) return;
     [newRows[index], newRows[swapIndex]] = [newRows[swapIndex], newRows[index]];
-    setRows(newRows.map((r, i) => ({ ...r, order: i + 1 })));
+    setRows(newRows.map((r, i) => ({ ...r, orderNum: i + 1 })));
   };
 
   // ── New page ──────────────────────────────────────────────────────────────
@@ -102,7 +107,7 @@ const BioBuilder = () => {
   if (!window.confirm(`Are you sure you want to delete Page ${pageNum} and all its content?`)) return;
 
   try {
-    const res = await fetch(`${API_BASE_URL}/bio-paragraphs/page/${pageNum}`, {
+    const res = await fetch(`${API_BASE_URL}/bio-paragraphs/page/${pageNum}?lang=${language}`, {
       method: 'DELETE',
       headers: { ...AuthService.getAuthHeaders() },
     });
@@ -135,9 +140,9 @@ const BioBuilder = () => {
 
     setSaving(true);
     try {
-      const payload = rows.map((r, i) => ({ ...r, order: i + 1, page: selectedPage, id: null }));
+      const payload = rows.map((r, i) => ({ ...r, orderNum: i + 1, page: selectedPage, id: null, language }));
 
-      const res = await fetch(`${API_BASE_URL}/bio-paragraphs/page/${selectedPage}/bulk`, {
+      const res = await fetch(`${API_BASE_URL}/bio-paragraphs/page/${selectedPage}/bulk?lang=${language}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -149,10 +154,10 @@ const BioBuilder = () => {
       if (!res.ok) throw new Error('Save failed');
 
       const saved = await res.json();
-      setRows(saved.sort((a, b) => a.order - b.order));
+      setRows(saved.sort((a, b) => a.orderNum - b.orderNum));
 
       // Refresh page list
-      const pagesRes = await fetch(`${API_BASE_URL}/bio-paragraphs/pages`);
+      const pagesRes = await fetch(`${API_BASE_URL}/bio-paragraphs/pages?lang=${language}`);
       setExistingPages(await pagesRes.json());
 
       setMessage('✅ Biography saved successfully!');
@@ -174,9 +179,19 @@ const BioBuilder = () => {
 
       {/* ── Page Selector ── */}
       <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)', padding: '1.5rem' }}>
-        <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#1e293b', marginBottom: '1rem' }}>
-          Biography Builder
-        </h3>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+          <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#1e293b', margin: 0 }}>
+            Biography Builder
+          </h3>
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+            padding: '0.25rem 0.75rem',
+            background: '#1f2937', color: 'white',
+            borderRadius: '0.375rem', fontSize: '0.8rem', fontWeight: '700'
+          }}>
+            {language === 'T' ? '🇮🇳 తెలుగు' : language === 'H' ? '🇮🇳 हिन्दी' : '🇺🇸 English'}
+          </span>
+        </div>
 
         {message && (
           <div style={{

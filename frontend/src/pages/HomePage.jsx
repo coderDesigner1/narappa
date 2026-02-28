@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 import { useNavigate } from "react-router-dom";
 import { Award } from 'lucide-react';
 import SideBar from '../components/custom/SideBar';
@@ -7,18 +8,37 @@ import Modal from '../components/custom/Modal';
 
 const HomePage = () => {
   const [awards, setAwards] = useState([]);
+  const [homeContent, setHomeContent] = useState(null);
+  const [contentLoading, setContentLoading] = useState(true);
   const [selectedPage, setSelectedPage] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
    const navigate = useNavigate();
 
+  const { language } = useLanguage();
   const API_BASE_URL = 'http://localhost:8080/api';
 
+
+  // Fetch poem, quote, bio button from DB whenever language changes
   useEffect(() => {
-    fetch(`${API_BASE_URL}/awards`)
+    setContentLoading(true);
+    fetch(`${API_BASE_URL}/home-content?lang=${language}`)
+      .then(res => res.json())
+      .then(data => {
+        setHomeContent(data);
+        setContentLoading(false);
+      })
+      .catch(err => {
+        console.error('Error fetching home content:', err);
+        setContentLoading(false);
+      });
+  }, [language]);
+
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/awards?lang=${language}`)
       .then(res => res.json())
       .then(data => setAwards(data))
       .catch(err => console.error('Error:', err));
-  }, []);
+  }, [language]);
 
   const handlePageSelect = (page) => {
     setSelectedPage(page);
@@ -101,20 +121,16 @@ const HomePage = () => {
             marginBottom: '2rem',
             textAlign: 'justify'
           }}>
-            He painted the world in whispers of light,<br/>
-Where skies breathed softly and fields held stories untold.<br/>
-But beyond the canvas, his truest art was love —<br/>
-A home built on patience, sacrifice, and quiet strength.<br/>
-<br/>
-A father whose silence taught more than words,<br/>
-A husband steadfast through every storm,<br/>
-A brother bound by loyalty,<br/>
-A teacher teaching future generation,<br/>
-A friend and fellow artist generous in spirit.<br/>
-<br/>
-Through every struggle, he carried dignity;<br/>
-Through every season, he left warmth behind.<br/>
-His life itself remains his greatest masterpiece.<br/>
+            {contentLoading ? (
+              <span style={{ color: '#d1d5db' }}>Loading...</span>
+            ) : homeContent ? (
+              // poem is stored as plain text with \n line breaks
+              homeContent.poem.split('\n').map((line, i) => (
+                line.trim() === ''
+                  ? <br key={i} />
+                  : <span key={i}>{line}<br /></span>
+              ))
+            ) : null}
           </p>
           <button style={{
             background: '#1f2937',
@@ -134,7 +150,7 @@ His life itself remains his greatest masterpiece.<br/>
           onMouseLeave={(e) => e.currentTarget.style.background = '#1f2937'}
           onClick={() => navigate("/bio")}
           >
-            Bio
+            {homeContent?.bioButton || 'Bio'}
             <span>→</span>
           </button>
         </div>
@@ -181,7 +197,8 @@ His life itself remains his greatest masterpiece.<br/>
           fontStyle: 'italic',
           marginBottom: '2rem'
         }}>
-"I am forever grateful to my family — my beloved wife and children,  and all who supported, guided me allowing me to grow as an artist and as a person. ""       </p>
+{contentLoading ? '' : (homeContent?.quote || '')}
+        </p>
         {/* <button style={{
           background: '#1f2937',
           color: 'white',

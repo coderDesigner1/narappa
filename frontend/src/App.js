@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react
 import { Menu, Award, Image, MessageSquare, X, Lock, FileText, Camera, ScrollText, LogIn} from 'lucide-react';
 
 import HomePage from './pages/HomePage';
+import { LanguageProvider } from './context/LanguageContext';
+import LanguageSwitcher from './components/custom/LanguageSwitcher';
 import BioPage from './pages/BioPage';
 import AwardPhotosPage from './pages/AwardPhotosPage';
 import PaintingsPage from './pages/PaintingsPage';
@@ -67,6 +69,7 @@ function NavBar() {
           </div>
 
           <div style={{ display: 'none', alignItems: 'center', gap: '1rem' }} className="desktop-nav">
+            <LanguageSwitcher />
             <Link to="/admin" style={{ background: 'none', border: 'none', color: '#6b7280', cursor: 'pointer', padding: '0.5rem', display: 'flex' }}>
               <LogIn size={20} />
             </Link>
@@ -108,6 +111,7 @@ export default function App() {
   const [showPrivacy, setShowPrivacy] = useState(false);
 
   return (
+    <LanguageProvider>
     <Router>
       {/* Outer wrapper: full viewport height, column flex so footer sticks to bottom */}
       <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#ffffff' }}>
@@ -147,5 +151,6 @@ export default function App() {
         `}} />
       </div>
     </Router>
+    </LanguageProvider>
   );
 }

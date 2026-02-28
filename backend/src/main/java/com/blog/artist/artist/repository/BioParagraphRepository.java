@@ -7,17 +7,23 @@ import java.util.List;
 
 public interface BioParagraphRepository extends JpaRepository<BioParagraph, Long> {
 
-    // Used by the public BioPage – all rows ordered for grouping in React
-    List<BioParagraph> findAllByOrderByPageAscOrderNumAsc();
+    // ── Public BioPage ────────────────────────────────────────────────────────
 
-    // Used by admin editor to load a single page's rows
-    List<BioParagraph> findByPageOrderByOrderNumAsc(Integer page);
+    // All rows for a given language, ordered for React grouping
+    List<BioParagraph> findByLanguageOrderByPageAscOrderNumAsc(String language);
 
-    // Used by admin to populate the page-number dropdown
-    @Query("SELECT DISTINCT b.page FROM BioParagraph b ORDER BY b.page ASC")
-    List<Integer> findDistinctPages();
+    // ── Admin editor ──────────────────────────────────────────────────────────
 
-    // Used when deleting all rows for a page before re-inserting (bulk save)
-    void deleteAllByPage(Integer page);
+    // Rows for a specific page + language (used when admin selects a page)
+    List<BioParagraph> findByPageAndLanguageOrderByOrderNumAsc(Integer page, String language);
+
+    // Distinct page numbers for a given language (populates admin page-selector dropdown)
+    @Query("SELECT DISTINCT b.page FROM BioParagraph b WHERE b.language = :language ORDER BY b.page ASC")
+    List<Integer> findDistinctPagesByLanguage(String language);
+
+    // ── Bulk / Delete ─────────────────────────────────────────────────────────
+
+    // Delete all rows for a page + language before re-inserting (bulk save & delete page)
+    void deleteAllByPageAndLanguage(Integer page, String language);
 
 }

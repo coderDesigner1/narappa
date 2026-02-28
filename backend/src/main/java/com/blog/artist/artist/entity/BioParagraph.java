@@ -27,4 +27,7 @@ public class BioParagraph {
     // '1' = header row, null or '0' = regular paragraph
     @Column
     private String header;
+
+    @Column
+    private String language;
 }

@@ -23,7 +23,7 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 -- GTID state at the beginning of the backup 
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'fcbb4a84-deeb-11f0-9f62-185680efec2c:1-239';
+SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'fcbb4a84-deeb-11f0-9f62-185680efec2c:1-261';
 
 --
 -- Table structure for table `admins`
@@ -92,7 +92,7 @@ CREATE TABLE `awards` (
   `year` int DEFAULT NULL,
   `description` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -103,33 +103,6 @@ LOCK TABLES `awards` WRITE;
 /*!40000 ALTER TABLE `awards` DISABLE KEYS */;
 INSERT INTO `awards` VALUES (1,'AP Artists Exhibition of Paintings, Drawings & Graphics','Group Shows',2020,''),(2,'All India Artist Friends Art Show, New Delhi','Group Shows',2013,''),(3,'Krishna Pushkramu Chitrakala Mahotsavam, Govt. of AP','Group Shows',2016,''),(5,'Lalit Kala Akademi, Hyderabad','Collections',NULL,''),(6,'Lalit Kala Akademi, Chennai','Collections',NULL,''),(7,'Central Lalit Kala Akademi, New Delhi','Collections',NULL,''),(8,'Regional Centre, Chennai','Collections',NULL,''),(9,'Jawaharlal Nehru University, New Delhi','Collections',NULL,''),(10,'A.P. Police Akademi','Collections',NULL,''),(11,'Contemporary Art Museum, Hyderabad','Collections',NULL,''),(12,'Many other private collections','Collections',NULL,''),(13,'A.P.Lalit Kala Akademi, Hyderabad','Awards',1985,''),(14,'Bharat Kala Parishad','Awards',1986,''),(15,'Hyderabad Art Society ','Awards',1986,''),(16,'A.P. Council of Artists','Awards',1987,''),(17,'Young Envoys International, Hyderabad','Honors',1996,''),(18,'Konaseema Chitrakala Parishad, Amalapuram','Honors',1996,''),(19,'Rajahmundry Chitrakala Niketam','Honors',1997,''),(20,'Potti Sriramulu Telugu University, Hyderabad','Honors',NULL,''),(21,'Creative Fine Arts Academy, Guntur, Amaravati','Honors',NULL,''),(22,'Sanskriti Puraskar','Honors',NULL,''),(23,'Kendriya Vidyalaya, AFS Hakimpet','Honors',NULL,''),(24,'Lalitha Kalabhirama Pinchamu','Honors',NULL,''),(25,'Ameer Art Academy, Nellore','Honors',NULL,''),(26,'Artists Camps sponsored by A.P.Lalit Kala Akademi at Hampi','Camps',1975,''),(27,'Artist Camp at Srisailam(A.P)','Camps',1984,''),(28,'Painting Camp at Amaravathi','Camps',1992,''),(29,'Painters camp sponsored by A.P. Cultural Department, Hyderabad','Camps',1994,''),(30,'Ceramic camp at Valley School, Bangalore','Camps',2004,''),(31,'Painting camp at Basara, Siddipet, Shilparamam','Camps',NULL,''),(32,'All India Artist Camp at Venkateswara Fine Arts College, Madhapur','Camps',NULL,''),(33,'Ceramic Camp, Chennai','Camps',NULL,''),(34,'Graphics Workshop organised by Paul Lingrin Regional Center, Madras','Workshops',1984,''),(35,'Printmaking Workshop at Sarojini Naidu School of Fine Arts University of Hyderabad','Workshops',1992,''),(36,'Soorya Festival, International Painting Exhibition, Kerala','Group Shows',NULL,''),(37,'Lavanya Group at Tirupathi ','Group Shows',2006,''),(38,'Petrichor, International Painting Exhibition, Amritsar','Group Shows',2016,''),(39,'Blooming Colours2, The Hyderabad Art Society','Group Shows',NULL,''),(40,'Chemi Luminescence, International Painting Exhibition, Kerala','Group Shows',2014,''),(41,'Andhra Kaladarshini, Art of Andhra Pradesh','Group Shows',2024,''),(42,'Andhra Shilpa, Chitrakala Shikaralu','Group Shows',NULL,''),(43,'AIFACS at Bikaner','Group Shows',2003,''),(44,'AP Artists Exhibition of Paintings, Drawings & Graphics','Group Shows',NULL,''),(45,'National Art Workshop, Amritsar','Workshops',2012,''),(46,'Solo and Group exhibitions at Hyderabad, Mumbai, Delhi, Kolkatta, Bangalore, Kerala, Visakhapatnam','Group Shows',NULL,'');
 /*!40000 ALTER TABLE `awards` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `bio_paragraphs`
---
-
-DROP TABLE IF EXISTS `bio_paragraphs`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `bio_paragraphs` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `header` varchar(255) DEFAULT NULL,
-  `order_no` int NOT NULL,
-  `page` int NOT NULL,
-  `paragraph` text NOT NULL,
-  `order` int NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `bio_paragraphs`
---
-
-LOCK TABLES `bio_paragraphs` WRITE;
-/*!40000 ALTER TABLE `bio_paragraphs` DISABLE KEYS */;
-/*!40000 ALTER TABLE `bio_paragraphs` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -148,6 +121,7 @@ CREATE TABLE `custom_pages` (
   `title` varchar(255) NOT NULL,
   `updated_at` datetime(6) NOT NULL,
   `year` int NOT NULL,
+  `language` varchar(2) NOT NULL DEFAULT 'E',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -158,7 +132,7 @@ CREATE TABLE `custom_pages` (
 
 LOCK TABLES `custom_pages` WRITE;
 /*!40000 ALTER TABLE `custom_pages` DISABLE KEYS */;
-INSERT INTO `custom_pages` VALUES (3,'[{\"type\":\"text\",\"html\":\"<b>txet </b>eht <font color=\\\"#c81414\\\">gnitseT</font>\",\"id\":1766600050690},{\"type\":\"text\",\"html\":\"gnineppaha siht si yhw <font color=\\\"#3e1919\\\">s<b>ow - </b>i want to remove this</font>\",\"id\":1766614841342},{\"type\":\"text\",\"html\":\"lufrednow - testing\",\"id\":1766614843376},{\"type\":\"image\",\"url\":\"http://localhost:8080/uploads/b7fa7d0c-2914-4d9f-b3ab-f4c12edf652a.jpg\",\"width\":\"58\",\"position\":\"right\",\"id\":1766600089730}]','2025-12-24 17:21:46.300068',12,_binary '','Testing3','2026-01-25 16:07:13.410468',2025),(4,'[{\"type\":\"text\",\"html\":\"<u>lkjklkjl;kjl;kjlkjkj </u>jlkj;lkjl;jkj <font color=\\\"#b62020\\\"><i>kkkjlkjlkj</i></font>\",\"id\":1766617856109},{\"type\":\"text\",\"content\":\"\",\"id\":1768357688143,\"style\":{\"bold\":false,\"italic\":false,\"underline\":false,\"color\":\"#000000\",\"fontSize\":\"16px\",\"align\":\"left\"}},{\"type\":\"image\",\"url\":\"http://localhost:8080/uploads/bfa82aa7-4630-4fab-9de2-08fb069c6991.jpg\",\"width\":\"65\",\"position\":\"center\",\"id\":1766622745529}]','2025-12-24 18:14:03.784390',12,_binary '','Testing4','2026-01-25 16:54:13.780322',2025),(5,'[{\"type\":\"image\",\"url\":\"http://localhost:8080/uploads/7aa099a9-629f-4cde-a66e-669ecf9cbe4e.jpg\",\"width\":100,\"position\":\"center\",\"id\":1769921052422}]','2026-01-31 23:44:56.801075',1,_binary '','Movies','2026-01-31 23:44:56.801075',1985);
+INSERT INTO `custom_pages` VALUES (3,'[{\"type\":\"text\",\"html\":\"<b>txet </b>eht <font color=\\\"#c81414\\\">gnitseT</font>\",\"id\":1766600050690},{\"type\":\"text\",\"html\":\"gnineppaha siht si yhw <font color=\\\"#3e1919\\\">s<b>ow - </b>i want to remove this</font>\",\"id\":1766614841342},{\"type\":\"text\",\"html\":\"lufrednow - testing\",\"id\":1766614843376},{\"type\":\"image\",\"url\":\"http://localhost:8080/uploads/b7fa7d0c-2914-4d9f-b3ab-f4c12edf652a.jpg\",\"width\":\"58\",\"position\":\"right\",\"id\":1766600089730}]','2025-12-24 17:21:46.300068',12,_binary '','Testing3','2026-01-25 16:07:13.410468',2025,'E'),(4,'[{\"type\":\"text\",\"html\":\"<u>lkjklkjl;kjl;kjlkjkj </u>jlkj;lkjl;jkj <font color=\\\"#b62020\\\"><i>kkkjlkjlkj</i></font>\",\"id\":1766617856109},{\"type\":\"text\",\"content\":\"\",\"id\":1768357688143,\"style\":{\"bold\":false,\"italic\":false,\"underline\":false,\"color\":\"#000000\",\"fontSize\":\"16px\",\"align\":\"left\"}},{\"type\":\"image\",\"url\":\"http://localhost:8080/uploads/bfa82aa7-4630-4fab-9de2-08fb069c6991.jpg\",\"width\":\"65\",\"position\":\"center\",\"id\":1766622745529}]','2025-12-24 18:14:03.784390',12,_binary '','Testing4','2026-01-25 16:54:13.780322',2025,'E'),(5,'[{\"type\":\"image\",\"url\":\"http://localhost:8080/uploads/7aa099a9-629f-4cde-a66e-669ecf9cbe4e.jpg\",\"width\":100,\"position\":\"center\",\"id\":1769921052422}]','2026-01-31 23:44:56.801075',1,_binary '','Movies','2026-01-31 23:44:56.801075',1985,'E');
 /*!40000 ALTER TABLE `custom_pages` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -178,7 +152,7 @@ CREATE TABLE `guestbook_entries` (
   PRIMARY KEY (`id`),
   KEY `parent_id` (`parent_id`),
   CONSTRAINT `guestbook_entries_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `guestbook_entries` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -187,7 +161,36 @@ CREATE TABLE `guestbook_entries` (
 
 LOCK TABLES `guestbook_entries` WRITE;
 /*!40000 ALTER TABLE `guestbook_entries` DISABLE KEYS */;
+INSERT INTO `guestbook_entries` VALUES (1,'2026-02-26 09:09:07.241975','test','testing',NULL),(2,'2026-02-26 09:09:20.001165','testing again','testing2',1);
 /*!40000 ALTER TABLE `guestbook_entries` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `home_content`
+--
+
+DROP TABLE IF EXISTS `home_content`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `home_content` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `bio_button` varchar(50) NOT NULL,
+  `language` varchar(2) NOT NULL,
+  `poem` text NOT NULL,
+  `quote` text NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UK_j2lwxiedkabijxpnqr02nin9t` (`language`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `home_content`
+--
+
+LOCK TABLES `home_content` WRITE;
+/*!40000 ALTER TABLE `home_content` DISABLE KEYS */;
+INSERT INTO `home_content` VALUES (1,'Bio','E','He painted the world in whispers of light\nWhere skies breathed softly and fields held stories untold.\nBut beyond the canvas, his truest art was love —\nA home built on patience, sacrifice, and quiet strength.\n\nA father whose silence taught more than words,\nA husband steadfast through every storm,\nA brother bound by loyalty,\nA teacher teaching future generation,\nA friend and fellow artist generous in spirit.\n\nThrough every struggle, he carried dignity;\nThrough every season, he left warmth behind.\nHis life itself remains his greatest masterpiece.','\"I am forever grateful to my family — my beloved wife and children, and all who supported, guided me allowing me to grow as an artist and as a person.\"'),(2,'జీవిత చరిత్ర','T','ఆయన వెలుతురు గుసగుసలతో జగమును చిత్రించాడు,\nఆకాశం మెల్లగా శ్వాసించే చోట,\nపొలాలు చెప్పుకోని కథలను దాచుకున్న చోట.\n\nకానీ కాన్వాసుకు అవతల,\nఆయన నిజమైన కళ — ప్రేమ,\nసహనంతో, త్యాగంతో, మౌన శక్తితో కట్టుకున్న ఒక ఇల్లు.\n\nతండ్రిగా — ఆయన నిశ్శబ్దం మాటలకంటే మిన్నగా నేర్పింది,\nభర్తగా — ప్రతి తుఫానులోనూ అచంచలంగా నిలిచాడు,\nఅన్నగా — విశ్వాసం వదలకుండా అనుబంధాన్ని కాపాడాడు.\nగురువుగా — రాబోయే తరాలకు వెలుగు దారి చూపించాడు,\nమిత్రుడిగా, సహ కళాకారుడిగా — హృదయపు సంపదను పంచాడు.\n\nప్రతి కష్టంలోనూ గౌరవాన్ని మోశాడు,\nప్రతి కాలంలోనూ వెచ్చదనాన్ని వదిలివెళ్ళాడు.\nఆయన జీవితమే — ఆయన మిగిల్చిన అత్యుత్తమ చిత్రం.','నా జీవన పయనంలో నన్ను నిలబెట్టిన నా ప్రియమైన సహధర్మచారిణికి, నా కన్నుల వెలుగులైన నా పిల్లలకు — మీరు లేకుంటే ఈ కళాకారుడు లేడు, ఈ మనిషి లేడు. మీ అందరి పట్ల నా హృదయం చిరకాలం కృతజ్ఞతతో నిండి ఉంటుంది.'),(3,'जीवनी','H','उन्होंने जगत को रोशनी की फुसफुसाहटों में चित्रित किया,\nजहाँ आसमान धीरे-धीरे सांस लेता था,\nऔर खेत अनकही कहानियाँ समेटे खड़े थे।\n\nपर कैनवास से परे, उनकी सच्ची कला थी — प्रेम,\nधैर्य, त्याग और मौन शक्ति से बना एक घर।\n\nपिता के रूप में — उनकी चुप्पी ने शब्दों से ज़्यादा सिखाया,\nपति के रूप में — हर तूफान में अडिग रहे,\nभाई के रूप में — वफ़ादारी से रिश्ता निभाया।\nशिक्षक के रूप में — आने वाली पीढ़ियों को राह दिखाई,\nमित्र और साथी कलाकार के रूप में — दिल की दौलत बाँटी।\n\nहर संघर्ष में गरिमा लिए चले,\nहर मौसम में पीछे गर्मजोशी छोड़ गए।\nउनका जीवन ही उनकी सबसे बड़ी कृति है।','मैं अपने परिवार — अपनी प्रिय पत्नी और बच्चों — और उन सभी का सदा आभारी हूँ जिन्होंने मुझे सहारा दिया, मार्गदर्शन किया, और एक कलाकार व इंसान के रूप में विकसित होने दिया।');
+/*!40000 ALTER TABLE `home_content` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -256,8 +259,9 @@ CREATE TABLE `paragraphs` (
   `page` int NOT NULL,
   `order_no` int DEFAULT NULL,
   `header` varchar(100) DEFAULT NULL,
+  `language` varchar(2) NOT NULL DEFAULT 'E',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -266,7 +270,7 @@ CREATE TABLE `paragraphs` (
 
 LOCK TABLES `paragraphs` WRITE;
 /*!40000 ALTER TABLE `paragraphs` DISABLE KEYS */;
-INSERT INTO `paragraphs` VALUES (1,'Chintha Narappa was born in 1944 to Late Shri Nagappa and Obulamma in Simhadripuram, Cuddapah district, Andhra Pradesh. Raised in a modest middle-class family, his early life was shaped by simplicity, resilience, and a deep fascination for colors and forms. What began as a childhood curiosity gradually transformed into a lifelong devotion to art.',1,1,'0'),(7,'He pursued formal training at Jawaharlal Nehru Technological University College of Fine Arts, earning his Diploma in Fine Arts in 1969. During his academic years, his talent was recognized with a prestigious scholarship from the Andhra Pradesh Lalit Kala Akademy, marking the beginning of a distinguished artistic journey.',1,2,'0'),(8,'Narappa dedicated much of his professional life to teaching, serving as an Art Teacher at St. Peter\'s High School until his retirement in 2002. As a teacher, he inspired generations of students, nurturing not only technical skill but also a sensitivity toward beauty and observation. His commitment to the arts extended beyond the classroom; he was actively associated with The Hyderabad Art Society, where he served as Treasurer and contributed significantly to the local art community.',1,3,'0'),(9,'Alongside his independent artistic practice, Narappa assisted art directors in several notable Telugu films, including Daasi, Rangula Kala, Matti Manushulu, and Harivillu. These collaborations reflect his versatility and engagement with socially meaningful cinema. He also assisted in the creation of important public sculptures, including the Ambedkar statue at ECIL Cross Roads and the statue of a Hindi writer installed on Tank Bund in Hyderabad, contributing to the cultural landmarks of the city.',1,4,'0'),(10,'A versatile artist, Narappa worked across multiple mediums—painting in oil, acrylic, and watercolor; drawing with charcoal, graphite, and pastel; and sculpting in clay and metal. His artistic exploration extended to printmaking techniques such as lithography and woodcut, as well as photography and glass work. Among these, watercolor remained his most expressive and celebrated medium.',1,5,'0'),(11,'Narappa stands as a significant figure in contemporary Indian art, particularly for his evocative landscapes that capture the essence of rural India with remarkable sensitivity and atmospheric depth. His works reflect restrained color palettes, layered spatial compositions, and an economical yet expressive brushwork. Rather than dramatic spectacle, his paintings offer quiet contemplation—subtle plays of light across fields, gathering monsoon clouds, and the enduring dignity of village life.',1,6,'0'),(12,'Balancing traditional Indian sensibilities with impressionistic influences, he developed a distinctive visual language. His landscapes are not merely depictions of scenery; they are meditations on time, transience, and the intimate relationship between humanity and nature. In an era of rapid urbanization, his works gently remind viewers of the timeless rhythms of the countryside.',1,7,'0'),(13,'Beyond exhibitions and recognitions, Narappa’s true legacy lies in the inspiration he imparted—to students, fellow artists, and admirers of art. He faced many struggles and life’s ups and downs from a young age, yet his passion never wavered. His journey from a small village in Andhra Pradesh to becoming a respected artist and mentor exemplifies dedication, perseverance, and quiet excellence.',1,8,'0'),(14,'This biography stands as a tribute to an extraordinary artist whose life was defined not only by artistic achievement but by humility, discipline, and devotion to creative expression. Through every brushstroke and every sculpture, Chintha Narappa left behind more than art—he left behind a legacy of vision, sensitivity, and enduring beauty.',1,9,'0'),(15,'Beyond his accomplishments as an artist and teacher, Chintha Narappa was a man of deep warmth, integrity, and quiet strength. As a husband, he was a pillar of support—steadfast, understanding, and deeply devoted to his family. Through life’s many challenges, he stood with patience and dignity, offering encouragement and stability to those around him.',2,1,'0'),(16,'As a father, he led not merely with words, but by example. His discipline, humility, and dedication to his craft became life lessons for his children. He taught the value of perseverance, hard work, and sincerity—qualities he himself embodied every day. His guidance was gentle yet firm, shaping lives with wisdom and compassion.',2,2,'0'),(17,'To his siblings, he was a caring brother—supportive, responsible, and ever ready to help. He maintained strong family bonds and believed deeply in togetherness and mutual respect.',2,3,'0'),(18,'Among colleagues and fellow artists, Narappa was admired not only for his artistic skill but for his generous spirit. He shared knowledge freely, encouraged younger artists, and contributed actively to artistic communities. He believed that art was not a competition, but a collective journey of expression and growth.',2,4,'0'),(19,'Those who worked alongside him remember him as humble, disciplined, and sincere—someone who valued relationships as much as recognition. His legacy lives on not only in his paintings and sculptures, but in the hearts of those who knew him personally.',2,5,'0'),(20,'The Man Beyond the Artist',2,0,'1');
+INSERT INTO `paragraphs` VALUES (15,'Beyond his accomplishments as an artist and teacher, Chintha Narappa was a man of deep warmth, integrity, and quiet strength. As a husband, he was a pillar of support—steadfast, understanding, and deeply devoted to his family. Through life’s many challenges, he stood with patience and dignity, offering encouragement and stability to those around him.',2,1,'0','E'),(16,'As a father, he led not merely with words, but by example. His discipline, humility, and dedication to his craft became life lessons for his children. He taught the value of perseverance, hard work, and sincerity—qualities he himself embodied every day. His guidance was gentle yet firm, shaping lives with wisdom and compassion.',2,2,'0','E'),(17,'To his siblings, he was a caring brother—supportive, responsible, and ever ready to help. He maintained strong family bonds and believed deeply in togetherness and mutual respect.',2,3,'0','E'),(18,'Among colleagues and fellow artists, Narappa was admired not only for his artistic skill but for his generous spirit. He shared knowledge freely, encouraged younger artists, and contributed actively to artistic communities. He believed that art was not a competition, but a collective journey of expression and growth.',2,4,'0','E'),(19,'Those who worked alongside him remember him as humble, disciplined, and sincere—someone who valued relationships as much as recognition. His legacy lives on not only in his paintings and sculptures, but in the hearts of those who knew him personally.',2,5,'0','E'),(20,'The Man Beyond the Artist',2,0,'1','E'),(44,'Chintha Narappa was born in 1944 to Late Shri Chintha Nagappa and Chintha Obulamma in Simhadripuram, Cuddapah district, Andhra Pradesh. Raised in a modest middle-class family, his early life was shaped by simplicity, resilience, and a deep fascination for colors and forms. What began as a childhood curiosity gradually transformed into a lifelong devotion to art.',1,1,'0','E'),(45,'He pursued formal training at Jawaharlal Nehru Technological University College of Fine Arts, earning his Diploma in Fine Arts in 1969. During his academic years, his talent was recognized with a prestigious scholarship from the Andhra Pradesh Lalit Kala Akademy, marking the beginning of a distinguished artistic journey.',1,2,'0','E'),(46,'Narappa dedicated much of his professional life to teaching, serving as an Art Teacher at St. Peter\'s High School until his retirement in 2002. As a teacher, he inspired generations of students, nurturing not only technical skill but also a sensitivity toward beauty and observation. His commitment to the arts extended beyond the classroom; he was actively associated with The Hyderabad Art Society, where he served as Treasurer and contributed significantly to the local art community.',1,3,'0','E'),(47,'Alongside his independent artistic practice, Narappa assisted art directors in several notable Telugu films, including Daasi, Rangula Kala, Matti Manushulu, and Harivillu. These collaborations reflect his versatility and engagement with socially meaningful cinema. He also assisted in the creation of important public sculptures. A bronze statue of the renowned Urdu poet, revolutionary, and freedom fighter Makhdoom Mohiuddin is installed on the Lower Tank Bund in Hyderabad. One more statue installed at ECIL Cross Roads, contributing to the cultural landmarks of the city.',1,4,'0','E'),(48,'A versatile artist, Narappa worked across multiple mediums—painting in oil, acrylic, and watercolor; drawing with charcoal, graphite, and pastel; and sculpting in clay and metal. His artistic exploration extended to printmaking techniques such as lithography and woodcut, as well as photography and glass work. Among these, watercolor remained his most expressive and celebrated medium.',1,5,'0','E'),(49,'Narappa stands as a significant figure in contemporary Indian art, particularly for his evocative landscapes that capture the essence of rural India with remarkable sensitivity and atmospheric depth. His works reflect restrained color palettes, layered spatial compositions, and an economical yet expressive brushwork. Rather than dramatic spectacle, his paintings offer quiet contemplation—subtle plays of light across fields, gathering monsoon clouds, and the enduring dignity of village life.',1,6,'0','E'),(50,'Balancing traditional Indian sensibilities with impressionistic influences, he developed a distinctive visual language. His landscapes are not merely depictions of scenery; they are meditations on time, transience, and the intimate relationship between humanity and nature. In an era of rapid urbanization, his works gently remind viewers of the timeless rhythms of the countryside.',1,7,'0','E'),(51,'Beyond exhibitions and recognitions, Narappa’s true legacy lies in the inspiration he imparted—to students, fellow artists, and admirers of art. He faced many struggles and life’s ups and downs from a young age, yet his passion never wavered. His journey from a small village in Andhra Pradesh to becoming a respected artist and mentor exemplifies dedication, perseverance, and quiet excellence.',1,8,'0','E'),(52,'This biography stands as a tribute to an extraordinary artist whose life was defined not only by artistic achievement but by humility, discipline, and devotion to creative expression. Through every brushstroke and every sculpture, Chintha Narappa left behind more than art—he left behind a legacy of vision, sensitivity, and enduring beauty. ',1,9,'0','E'),(53,'చింతా నరప్ప 1944వ సంవత్సరంలో కర్నూలు జిల్లా సిమ్హాద్రిపురంలో, స్వర్గీయ శ్రీ చింతా నాగప్ప మరియు చింతా ఒబులమ్మ దంపతులకు జన్మించారు. సాధారణ మధ్యతరగతి కుటుంబంలో పెరిగిన ఆయన బాల్యం సరళత, సహనం మరియు రంగులు-రూపాల పట్ల లోతైన ఆసక్తితో రూపుదిద్దుకుంది. చిన్నతనంలో మొదలైన ఆ కుతూహలం క్రమంగా జీవితాంతం కళ పట్ల అర్పణగా మారింది.',1,NULL,'0','T');
 /*!40000 ALTER TABLE `paragraphs` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -280,9 +284,9 @@ DROP TABLE IF EXISTS `visitor_logs`;
 CREATE TABLE `visitor_logs` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `ip_address` varchar(255) NOT NULL,
-  `visit_date` datetime(6) NOT NULL,
+  `visit_date` date NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -291,7 +295,7 @@ CREATE TABLE `visitor_logs` (
 
 LOCK TABLES `visitor_logs` WRITE;
 /*!40000 ALTER TABLE `visitor_logs` DISABLE KEYS */;
-INSERT INTO `visitor_logs` VALUES (1,'0:0:0:0:0:0:0:1','2026-02-25 00:00:00.000000'),(2,'0:0:0:0:0:0:0:1','2026-02-25 00:00:00.000000'),(3,'0:0:0:0:0:0:0:1','2026-02-26 00:00:00.000000');
+INSERT INTO `visitor_logs` VALUES (1,'0:0:0:0:0:0:0:1','2026-02-25'),(2,'0:0:0:0:0:0:0:1','2026-02-25'),(3,'0:0:0:0:0:0:0:1','2026-02-26'),(4,'0:0:0:0:0:0:0:1','2026-02-27'),(5,'0:0:0:0:0:0:0:1','2026-02-27');
 /*!40000 ALTER TABLE `visitor_logs` ENABLE KEYS */;
 UNLOCK TABLES;
 SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
@@ -305,4 +309,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-02-26  0:25:24
+-- Dump completed on 2026-02-27 23:29:19
