@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react
 import { Menu, Award, Image, MessageSquare, X, Lock, FileText, Camera, ScrollText, LogIn} from 'lucide-react';
 
 import HomePage from './pages/HomePage';
-import { LanguageProvider } from './context/LanguageContext';
+import { LanguageProvider, LANGUAGES, useLanguage } from './context/LanguageContext';
 import LanguageSwitcher from './components/custom/LanguageSwitcher';
 import BioPage from './pages/BioPage';
 import AwardPhotosPage from './pages/AwardPhotosPage';
@@ -14,6 +14,47 @@ import PagesListPage from './components/PagesListPage';
 import AwardsPage from './pages/AwardsPage';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import Footer from './components/Footer';
+import './mobile-fix.css';
+
+// Inline language switcher for mobile menu
+function MobileLanguageSwitcher({ onSelect }) {
+  const { language, setLanguage } = useLanguage();
+  return (
+    <div style={{ display: 'flex', gap: '0.5rem', paddingLeft: '0.25rem', flexWrap: 'wrap' }}>
+      {LANGUAGES.map(lang => {
+        const isActive = lang.flag === language;
+        return (
+          <button
+            key={lang.flag}
+            onClick={() => { setLanguage(lang.flag); onSelect(); }}
+            style={{
+              display: 'flex', alignItems: 'center', gap: '0.4rem',
+              padding: '0.45rem 0.85rem',
+              border: `2px solid ${isActive ? '#2563eb' : '#e5e7eb'}`,
+              borderRadius: '0.5rem',
+              background: isActive ? '#2563eb' : 'white',
+              color: isActive ? 'white' : '#374151',
+              cursor: 'pointer', fontSize: '0.875rem', fontWeight: isActive ? '700' : '400',
+              transition: 'all 0.15s',
+            }}
+          >
+            <span style={{
+              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+              width: '20px', height: '20px',
+              background: isActive ? 'white' : '#1f2937',
+              color: isActive ? '#2563eb' : 'white',
+              borderRadius: '3px', fontSize: '0.65rem', fontWeight: '700',
+            }}>
+              {lang.flag}
+            </span>
+            {lang.nativeLabel}
+            {isActive && <span style={{ fontSize: '0.75rem' }}>✓</span>}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
 
 function NavBar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -42,7 +83,7 @@ function NavBar() {
       <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 2rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '80px' }}>
           <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <img src="http://localhost:8080/uploads/logo.png" style={{ width: '35px', height: '35px' }} alt="logo" />
+            {/* <img src="http://localhost:8080/uploads/logo.png" style={{ width: '35px', height: '35px' }} alt="logo" /> */}
             <div style={{ fontSize: '1.5rem', fontWeight: '600', color: '#1f2937', letterSpacing: '0.05em' }}>
               NARAPPA CHINTHA
             </div>
@@ -99,6 +140,21 @@ function NavBar() {
                 </Link>
               );
             })}
+
+            {/* ── Language switcher row for mobile ── */}
+            <div style={{
+              marginTop: '0.5rem',
+              paddingTop: '0.75rem',
+              borderTop: '1px solid #f3f4f6',
+              paddingBottom: '0.25rem'
+            }}>
+              <p style={{ fontSize: '0.75rem', color: '#9ca3af', fontWeight: '600',
+                textTransform: 'uppercase', letterSpacing: '0.06em',
+                marginBottom: '0.5rem', paddingLeft: '0.25rem' }}>
+                Language
+              </p>
+              <MobileLanguageSwitcher onSelect={() => setMobileMenuOpen(false)} />
+            </div>
           </div>
         )}
       </div>

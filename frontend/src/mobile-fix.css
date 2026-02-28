@@ -1,0 +1,42 @@
+/* ── Global Mobile Overflow Fix ─────────────────────────────────────────────
+   Add this to your index.css or App.css
+   This stops ALL pages from overflowing horizontally on mobile
+──────────────────────────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* Prevent any element from breaking out of viewport */
+img,
+video,
+iframe,
+table {
+  max-width: 100%;
+}
+
+/* Responsive typography — prevents text overflow on small screens */
+h1 { font-size: clamp(1.5rem, 5vw, 2.5rem); }
+h2 { font-size: clamp(1.25rem, 4vw, 2.25rem); }
+
+/* Mobile-specific rules */
+@media (max-width: 768px) {
+  /* Hero section on HomePage — stack vertically */
+  section:first-of-type {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+
+  /* Ensure all grid layouts collapse to single column on very small screens */
+  [style*="minmax(300px"] {
+    grid-template-columns: 1fr !important;
+  }
+}
