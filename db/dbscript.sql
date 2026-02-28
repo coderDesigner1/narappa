@@ -23,7 +23,7 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 -- GTID state at the beginning of the backup 
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'fcbb4a84-deeb-11f0-9f62-185680efec2c:1-261';
+SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'fcbb4a84-deeb-11f0-9f62-185680efec2c:1-262';
 
 --
 -- Table structure for table `admins`
@@ -152,7 +152,7 @@ CREATE TABLE `guestbook_entries` (
   PRIMARY KEY (`id`),
   KEY `parent_id` (`parent_id`),
   CONSTRAINT `guestbook_entries_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `guestbook_entries` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -161,7 +161,6 @@ CREATE TABLE `guestbook_entries` (
 
 LOCK TABLES `guestbook_entries` WRITE;
 /*!40000 ALTER TABLE `guestbook_entries` DISABLE KEYS */;
-INSERT INTO `guestbook_entries` VALUES (1,'2026-02-26 09:09:07.241975','test','testing',NULL),(2,'2026-02-26 09:09:20.001165','testing again','testing2',1);
 /*!40000 ALTER TABLE `guestbook_entries` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -309,4 +308,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-02-27 23:29:19
+-- Dump completed on 2026-02-27 23:41:30
