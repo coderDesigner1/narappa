@@ -69,8 +69,16 @@ const HomePage = () => {
         
 
         {/* Right Image */}
-        <div style={{ position: 'relative' }}>
-          <img src="http://localhost:8080/uploads/Nar.jpg" alt="Nar image" style={{height:"700px"}}/>
+        <div style={{ position: 'relative', width: '100%', maxWidth: '500px' }}>
+          <img
+            src="http://localhost:8080/uploads/Nar.jpg"
+            alt="Nar image"
+            style={{
+              width: '100%',
+              height: 'auto',
+              display: 'block',
+            }}
+          />
           {/* <div style={{
             background: 'linear-gradient(135deg, #c17a4a 0%, #8b5a3c 100%)',
             borderRadius: '0.5rem',
@@ -272,6 +280,14 @@ const HomePage = () => {
           section:first-of-type {
             grid-template-columns: 1fr !important;
             gap: 2rem !important;
+            min-height: unset !important;
+          }
+          section:first-of-type > div:first-child {
+            max-width: 100% !important;
+            margin: 0 auto;
+          }
+          section:first-of-type > div:last-child {
+            max-width: 100% !important;
           }
         }
       `}} />

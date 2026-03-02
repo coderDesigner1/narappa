@@ -9,6 +9,7 @@ import PageBuilder from '../components/PageBuilder';
 import ManagePages from '../components/ManagePages';
 import BioBuilder from '../components/BioBuilder';
 import HomeContentBuilder from '../components/HomeContentBuilder';
+import GuestbookBuilder from '../components/GuestbookBuilder';
 
 
 const AdminPage = ({ isAdmin, setIsAdmin }) => {
@@ -123,6 +124,7 @@ const AdminPage = ({ isAdmin, setIsAdmin }) => {
         {navBtn('page-builder', <Plus     size={32} style={{ marginBottom: '0.5rem' }} />, 'Page Builder')}
         {navBtn('bio-builder',  <BookOpen size={32} style={{ marginBottom: '0.5rem' }} />, 'Biography Builder')}
         {navBtn('home-builder',  <BookOpen size={32} style={{ marginBottom: '0.5rem' }} />, 'Home Content Builder')}
+        {navBtn('gb-builder',  <BookOpen size={32} style={{ marginBottom: '0.5rem' }} />, 'Guest Book Builder')}
       </div>
 
       {view === 'paintings'    && <ManagePaintings />}
@@ -132,6 +134,8 @@ const AdminPage = ({ isAdmin, setIsAdmin }) => {
       {view === 'page-builder' && <PageBuilder />}
       {view === 'bio-builder'  && <BioBuilder />}
       {view === 'home-builder'  && <HomeContentBuilder />}
+      {view === 'gb-builder'  && <GuestbookBuilder />}
+
     </div>
   );
 };
